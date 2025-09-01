@@ -1,23 +1,41 @@
-# Part 0 Diagrams
+## Part 0 Diagrams
 
-## 0.4: New note diagram
+#New Note Diagram
+
 ```mermaid
 sequenceDiagram
-    participant Browser
-    participant Server
-    participant Database
+    participant browser
+    participant server
 
-    Browser->>Server: POST /new_note with form data
-    Server->>Database: Save new note
-    Database-->>Server: OK
-    Server-->>Browser: Redirect /notes
-    Browser->>Server: GET /notes
-    Server-->>Browser: HTML page
-    Browser->>Server: GET main.css
-    Server-->>Browser: CSS
-    Browser->>Server: GET main.js
-    Server-->>Browser: JavaScript
-    Browser->>Server: GET /data.json
-    Server-->>Browser: Notes JSON
-    Browser-->>Browser: Render updated notes
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: HTTP 302 Redirect to /exampleapp/notes
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the CSS file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    Note right of browser: The browser executes JavaScript, which fetches the JSON data
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "the new note", "date": "2025-08-31" }, ... ]
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the updated notes list
+
+
+
 
